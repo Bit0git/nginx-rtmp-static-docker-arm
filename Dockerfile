@@ -4,10 +4,14 @@ RUN apk update && \
     apk upgrade && \
     apk add gcc g++ make wget file openssl-dev pcre-dev zlib-dev
 
-RUN NGINX_VERSION=nginx-1.15.8 && \
+RUN cd /tmp &&\
+    NGINX_VERSION=nginx-1.15.8 && \
     wget http://nginx.org/download/${NGINX_VERSION}.tar.gz && \
     tar zxf ${NGINX_VERSION}.tar.gz && \
-    cd ${NGINX_VERSION} && \
+    NGINX_RTMP_MODULE_VERSION=1.2.1 &&\
+    wget -O nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION}.tar.gz https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_MODULE_VERSION}.tar.gz && \
+    tar -zxf nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION}.tar.gz && \
+        cd ${NGINX_VERSION} && \
     ls -lha && \
     ./configure \
         --with-pcre \
@@ -23,7 +27,8 @@ RUN NGINX_VERSION=nginx-1.15.8 && \
         --http-log-path=/var/log/nginx/access.log \
         --error-log-path=/var/log/nginx/error.log \
         --pid-path=/var/run/nginx.pid \
-        --lock-path=/var/run/nginx.lock && \
+        --lock-path=/var/run/nginx.lock \
+        --add-module=/tmp/nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION} &&\
     sed -i "s/-lpcre -lssl -lcrypto -lz/-static -lpcre -lssl -lcrypto -lz/g" objs/Makefile &&\
     make -j2 CFLAGS=-Os LDFLAGS=-static &&\
     make install && \
