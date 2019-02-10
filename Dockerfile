@@ -12,7 +12,7 @@ RUN cd /tmp &&\
     tar zxf ${NGINX_VERSION}.tar.gz && \
     wget -O nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION}.tar.gz https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_MODULE_VERSION}.tar.gz && \
     tar -zxf nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION}.tar.gz && \
-        cd ${NGINX_VERSION} && \
+    cd ${NGINX_VERSION} && \
     ./configure \
         --prefix=/etc/nginx \
         --sbin-path=/usr/local/sbin/nginx \
@@ -35,11 +35,8 @@ RUN cd /tmp &&\
     strip -s /usr/local/sbin/nginx &&\
     rm -rf /etc/nginx/*.default
 
-
 FROM arm32v6/alpine
 LABEL  maintainer="BiT0 <bit0@fastwebnet.it>"
-RUN ln -sf /dev/stdout /var/log/nginx/access.log &&\
-    ln -sf /dev/stderr /var/log/nginx/error.log
 COPY --from=build /usr/local/sbin/nginx /usr/local/sbin/nginx
 COPY --from=build /etc/nginx /etc/nginx
 COPY --from=build /var/log/nginx /var/log/nginx
