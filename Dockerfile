@@ -35,6 +35,7 @@ RUN cd /tmp &&\
     strip -s /usr/local/sbin/nginx &&\
     rm -rf /etc/nginx/*.default
 
+
 FROM arm32v6/alpine
 LABEL  maintainer="BiT0 <bit0@fastwebnet.it>"
 RUN ln -sf /dev/stdout /var/log/nginx/access.log &&\
@@ -43,8 +44,7 @@ COPY --from=build /usr/local/sbin/nginx /usr/local/sbin/nginx
 COPY --from=build /etc/nginx /etc/nginx
 COPY --from=build /var/log/nginx /var/log/nginx
 COPY nginx.conf /etc/nginx/nginx.conf
-RUN ln -sf /dev/stdout /var/log/nginx/access.log &&\
-    ln -sf /dev/stderr /var/log/nginx/error.log
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 WORKDIR /etc/nginx
 EXPOSE 1935
 CMD ["nginx", "-g", "daemon off;"]
