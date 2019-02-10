@@ -1,4 +1,4 @@
-FROM arm32v6/alpin AS build
+FROM arm32v6/alpine AS build
 
 ENV NGINX_VERSION nginx-1.15.0
 ENV NGINX_RTMP_MODULE_VERSION 1.2.1
