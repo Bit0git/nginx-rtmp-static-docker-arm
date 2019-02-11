@@ -28,6 +28,7 @@ RUN cd /tmp &&\
         --with-http_slice_module \
         --with-stream \
         --with-stream_ssl_preread_module \
+        --with-threads \
         --add-module=/tmp/nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION} &&\
     sed -i "s/-lpcre -lssl -lcrypto -lz/-static -lpcre -lssl -lcrypto -lz/g" objs/Makefile &&\
     make -j2 CFLAGS=-Os LDFLAGS=-static &&\
