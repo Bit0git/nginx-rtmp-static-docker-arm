@@ -20,7 +20,6 @@ RUN cd /tmp && \
         --with-http_slice_module \
         --with-stream \
         --with-stream_ssl_preread_module \
-        --with-threads \
         --with-ipv6 \
         --sbin-path=/usr/local/sbin/nginx \
         --prefix=/etc/nginx \
